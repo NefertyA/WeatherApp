@@ -27,7 +27,7 @@ function parseCurrentWeather({ current, daily }) {
 
     const {
         temperature_2m_max: [maxTemp],
-        temperature_2m_max: [minTemp],
+        temperature_2m_min: [minTemp],
         apparent_temperature_max: [maxFeelsLike],
         apparent_temperature_min: [minFeelsLike],
         precipitation_sum: [precip],

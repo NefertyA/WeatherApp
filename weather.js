@@ -1,21 +1,21 @@
-import axios from "axios"
+export async function getWeather(lat, lon, timezone){
+    const url = 
+    "https://api.open-meteo.com/v1/forecast" +
+    "?daily=weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,precipitation_sum" +
+    "&hourly=temperature_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m" +
+    "&current=temperature_2m,wind_speed_10m,weather_code" +
+    "&timeformat=unixtime" +
+    `&latitude=${lat}&longitude=${lon}&timezone=${timezone}`
+    
+    const response = await fetch(url)
+    if (!response.ok) throw new Error("Could not fetch weather")
 
-export function getWeather(lat, lon, timezone){
-    return axios.get("https://api.open-meteo.com/v1/forecast?current=temperature_2m,weather_code,wind_speed_10m&hourly=temperature_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,precipitation_sum&timeformat=unixtime",
-        {
-            params: {
-                latitude: lat,
-                longitude: lon,
-                timezone,
-            },
-        }
-    ).then(({ data}) => {
-        return {
+    const data = await response.json()
+    return {
             current: parseCurrentWeather(data),
             daily: parseDailyWeather(data),
-            hourly: parseHourlyWeather(data)
-        }
-    })
+            hourly: parseHourlyWeather(data),
+    }
 }
 
 function parseCurrentWeather({ current, daily }) {
